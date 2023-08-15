@@ -12,14 +12,14 @@ export interface EnvProps {
 
 export const envValidatorSchema = Joi.object<EnvProps>({
   PORT: Joi.number().default(8000),
-  NODE_ENV: Joi.string()
+  NODE_ENV: Joi.string().required()
     .valid(AppEnv.DEVELOPMENT, AppEnv.TEST, AppEnv.STAGING, AppEnv.PRODUCTION)
     .default(AppEnv.DEVELOPMENT),
 
   DATABASE_URL: Joi.string().required(),
 
-  REDIS_SESSION_STORE_URL: Joi.string().required(),
+  REDIS_SESSION_STORE_URL: Joi.string(),
 
   SWAGGER_ROUTE: Joi.string().default('/api/docs'),
-  SESSION_SECRET: Joi.string().required(),
+  SESSION_SECRET: Joi.string(),
 }).unknown(true);
