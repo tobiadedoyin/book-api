@@ -5,7 +5,7 @@ import Logger from '../../config/logger';
 
 export function LoginModeValidatorMiddleware(
   req: Request,
-  _res: Response,
+  _res: Response, // underscore is used to ignore paramter that you are not using
   next: NextFunction,
 ) {
   const logger = new Logger(LoginModeValidatorMiddleware.name);
