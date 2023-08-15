@@ -1,6 +1,7 @@
 import * as process from 'process';
 import { configDotenv } from 'dotenv';
 import Joi from 'joi';
+import config from '../../config/env';
 
 configDotenv();
 
@@ -9,7 +10,7 @@ export default class Env {
 
   public static async validateEnv<T>(validationSchema: Joi.ObjectSchema<T>) {
     try {
-      this.validatedEnv = await validationSchema.validateAsync(process.env);
+      this.validatedEnv = await validationSchema.validateAsync(config);
     } catch (e) {
       throw e;
     }
