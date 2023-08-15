@@ -12,7 +12,8 @@ export interface EnvProps {
 
 export const envValidatorSchema = Joi.object<EnvProps>({
   PORT: Joi.number().default(8000),
-  NODE_ENV: Joi.string().required()
+  NODE_ENV: Joi.string()
+    .required()
     .valid(AppEnv.DEVELOPMENT, AppEnv.TEST, AppEnv.STAGING, AppEnv.PRODUCTION)
     .default(AppEnv.DEVELOPMENT),
 
