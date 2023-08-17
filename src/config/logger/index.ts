@@ -1,6 +1,5 @@
 import Env from '../../shared/utils/env';
 import winston from 'winston';
-// @ts-ignore
 import { Papertrail } from 'winston-papertrail';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
