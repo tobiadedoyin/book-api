@@ -5,7 +5,7 @@ import Env from './shared/utils/env';
 import Logger from './config/logger';
 import { connectDB } from './config/database';
 import configureSessionStore from './config/session-store';
-import App from './app';
+import App from './config/express';
 import { AppEnv } from './shared/enums';
 
 async function main(App: (...args: any[]) => Express) {
@@ -15,7 +15,6 @@ async function main(App: (...args: any[]) => Express) {
   await Env.validateEnv(envValidatorSchema);
   await connectDB();
   await configureSessionStore();
-
   const app = App();
 
   const server = http.createServer(app);

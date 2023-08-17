@@ -1,4 +1,3 @@
-import * as process from 'process';
 import { configDotenv } from 'dotenv';
 import Joi from 'joi';
 import config from '../../config/env';
@@ -18,6 +17,6 @@ export default class Env {
 
   public static get<T = string>(key: string) {
     if (this.validatedEnv?.[key] != null) return this.validatedEnv[key] as T;
-    return process.env[key] as T;
+    return (config as any)[key] as T;
   }
 }

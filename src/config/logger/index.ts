@@ -1,4 +1,7 @@
+import Env from '../../shared/utils/env';
 import winston from 'winston';
+// @ts-ignore
+import { Papertrail } from 'winston-papertrail';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
 const logFormat = winston.format.combine(
@@ -37,16 +40,67 @@ const errorLogRotationTransport = new DailyRotateFile({
   extension: '.log',
 });
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: logFormat,
-  transports: [
-    infoLogRotationTransport,
-    errorLogRotationTransport,
-    new winston.transports.Console(),
-  ],
+const winstonPapertrail = new Papertrail({
+  host: `${Env.get<string>('PAPERTRAIL_HOST')}`.split('\r')[0],
+  port: Env.get<string>('PAPERTRAIL_URL'),
+  app_name: `${Env.get<string>('NODE_ENV')}-api`,
 });
+const loggerInfo = (env: string) => {
+  let logger;
+  switch (env) {
+    case 'production':
+      logger = winston.createLogger({
+        level: 'info',
+        format: logFormat,
+        transports: [
+          infoLogRotationTransport,
+          errorLogRotationTransport,
+          winstonPapertrail,
+        ],
+        exitOnError: false,
+      });
+      break;
+    case 'development':
+      logger = winston.createLogger({
+        level: 'info',
+        format: logFormat,
+        transports: [
+          infoLogRotationTransport,
+          errorLogRotationTransport,
+          new winston.transports.Console(),
+        ],
+        exitOnError: false,
+      });
+      break;
+    case 'test':
+      logger = winston.createLogger({
+        level: 'info',
+        format: logFormat,
+        transports: [
+          infoLogRotationTransport,
+          errorLogRotationTransport,
+          new winston.transports.File(),
+        ],
+        exitOnError: false,
+      });
+      break;
+    default:
+      logger = winston.createLogger({
+        level: 'info',
+        format: logFormat,
+        transports: [
+          infoLogRotationTransport,
+          errorLogRotationTransport,
+          new winston.transports.Console(),
+        ],
+        exitOnError: false,
+      });
+  }
 
+  return logger;
+};
+
+const logger = loggerInfo(Env.get<string>('NODE_ENV'));
 export default class Logger {
   constructor(private readonly defaultContext: string) {}
   public static log(message: string | any, context?: string): void {

@@ -1,10 +1,12 @@
-import 'dotenv/config';
+import { configDotenv } from 'dotenv';
+configDotenv();
 
-const { TEST_BOILER_NODE_ENV, BOILER_TEST_PORT, DATABASE_TEST_URL } =
-  process.env;
-
-export default {
-  NODE_ENV: TEST_BOILER_NODE_ENV,
-  PORT: BOILER_TEST_PORT,
-  DATABASE_URL: DATABASE_TEST_URL,
+const test = {
+  NODE_ENV: process.env.BOILER_NODE_ENV,
+  PORT: process.env.BOILER_PORT,
+  DATABASE_URL: process.env.DATABASE_URL,
+  PAPERTRAIL_HOST: process.env.BOILER_PAPERTRAIL_HOST,
+  PAPERTRAIL_URL: process.env.BOILER_PAPERTRAIL_URL,
 };
+
+export default test;

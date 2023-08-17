@@ -8,9 +8,9 @@ import { Router } from 'express';
 // const invalidRoutes = Router();
 // invalidRoutes.all(WILD_CARD, invalidRoute);
 
-import authenticationRouter from './authentication/routes';
+// import authenticationRouter from './authentication/routes';
 import userRouter from './users/routes';
 
-const versionOneRouter: Router[] = [authenticationRouter, userRouter];
+const versionOneRouter: Router[] = [userRouter];
 
 export default versionOneRouter;
