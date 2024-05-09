@@ -6,6 +6,4 @@ export type ExpressController = (
   next?: NextFunction,
 ) => any;
 
-export type SessionAccount = {
-  id: string;
-};
+export type fnRequest = (req: Request, res: Response) => Promise<any>;

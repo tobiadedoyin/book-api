@@ -3,6 +3,6 @@ node_modules
 dist
 build
 logs
+coverage
+.nyc_output
 package-lock.json
-
-*.log

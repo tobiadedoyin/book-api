@@ -4,4 +4,4 @@ import test from './test';
 export default {
   development,
   test,
-}[process.env.BOILER_NODE_ENV || 'development'];
+}[process.env.NCTP_DATA_MINING_NODE_ENV || 'development'];

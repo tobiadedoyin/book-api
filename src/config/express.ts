@@ -1,38 +1,23 @@
-import express, { Express } from 'express';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import { Router, ROUTE_BASE } from '../routes';
 import { GlobalErrorCatcherMiddleware } from '../shared/middlewares/global-error-catcher.middleware';
-import RequestLoggerMiddleware from '../shared/middlewares/request-logger.middleware';
-import ResponseLoggerMiddleware from '../shared/middlewares/response-logger.middleware';
-import ROUTES from '../const.routes';
-import versionOneRouter from '../route';
 
-import Env from '../shared/utils/env';
-import Swagger from '../config/swagger';
-import { AppEnv } from '../shared/enums';
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-export default function App(): Express {
-  const app = express();
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-  app.use(RequestLoggerMiddleware);
-  app.use(ResponseLoggerMiddleware);
+app.use(express.static('public'));
 
-  const NODE_ENV = Env.get<string>('NODE_ENV');
+// Use helmet to secure Express headers
+app.use(helmet());
+app.disable('x-powered-by');
 
-  const SWAGGER_ROUTE = Env.get<string>('SWAGGER_ROUTE');
+app.use(ROUTE_BASE.V1_PATH, Router);
 
-  Swagger(app, {
-    swaggerDocRoute: SWAGGER_ROUTE,
-    definitionsPath: [
-      NODE_ENV == AppEnv.DEVELOPMENT ? './**/*.ts' : './**/*.js',
-    ],
-    explorer: true,
-  });
+app.use(GlobalErrorCatcherMiddleware); // must be last applied middleware to catch globalErrs
 
-  app.disable('x-powered-by');
-  app.use(ROUTES.V1_PATH, versionOneRouter);
-
-  app.use(GlobalErrorCatcherMiddleware); // must be last applied middleware to catch globalErrs
-
-  return app;
-}
+export default app;
