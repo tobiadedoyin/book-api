@@ -9,7 +9,7 @@ const logFormat = winston.format.combine(
   winston.format.printf((info) => {
     const { level, message, timestamp } = info;
     return `${timestamp} | ${level}: ${message}`;
-  }),
+  })
 );
 
 const infoLogRotationTransport = new DailyRotateFile({

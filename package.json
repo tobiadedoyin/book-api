@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "build": "rm -rf dist && tsc",
+    "prestart": "npm run build",
     "dev": "nodemon --exec ts-node ./src/index.ts --mode development",
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
