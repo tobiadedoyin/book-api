@@ -1,3 +1,5 @@
+import { Response } from 'express';
+
 export class HttpException extends Error {
   constructor(public readonly code: number, message: string) {
     super(message);
@@ -39,3 +41,11 @@ export class NotFoundException extends HttpException {
     super(404, customMessage ?? 'Not Found');
   }
 }
+
+export const handleCustomError = (res: Response, error: any, statusCode: number) => {
+  return res.status(statusCode).json({
+      status: 'error',
+      statusCode: statusCode,
+      message: error.message
+  });
+};
