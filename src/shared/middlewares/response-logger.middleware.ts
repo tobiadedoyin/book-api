@@ -5,7 +5,7 @@ import requestParser from '../utils/req-logger-parser';
 export default function ResponseLoggerMiddleware(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const logger = new Logger(ResponseLoggerMiddleware.name);
 
@@ -26,8 +26,8 @@ export default function ResponseLoggerMiddleware(
 
     const responseBody = Buffer.concat(
       chunks.map((x: any) =>
-        typeof x === 'string' ? Buffer.from(x, 'binary') : x,
-      ),
+        typeof x === 'string' ? Buffer.from(x, 'binary') : x
+      )
     ).toString('utf8');
 
     const requestInfo = requestParser(req);
@@ -36,7 +36,7 @@ export default function ResponseLoggerMiddleware(
       JSON.stringify({
         requestInfo,
         responseInfo: { statusCode: res.statusCode, body: responseBody },
-      }),
+      })
     );
 
     // eslint-disable-next-line prefer-rest-params

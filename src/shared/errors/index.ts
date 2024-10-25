@@ -3,6 +3,7 @@ import { Response } from 'express';
 export class HttpException extends Error {
   constructor(public readonly code: number, message: string) {
     super(message);
+    console.log(code, message);
   }
 }
 
@@ -42,10 +43,14 @@ export class NotFoundException extends HttpException {
   }
 }
 
-export const handleCustomError = (res: Response, error: any, statusCode: number) => {
+export const handleCustomError = (
+  res: Response,
+  error: any,
+  statusCode: number
+) => {
   return res.status(statusCode).json({
-      status: 'error',
-      statusCode: statusCode,
-      message: error.message
+    status: 'error',
+    statusCode: statusCode,
+    message: error.message,
   });
 };

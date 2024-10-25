@@ -9,19 +9,13 @@ const authRouter = Router();
 authRouter.post(
   '/register',
   RequestBodyValidatorMiddleware(validators.registerSchema),
-  WatchAsyncController(authController.createUser),
+  WatchAsyncController(authController.createUser)
 );
-
-authRouter.post(
-  '/verify-otp',
-  RequestBodyValidatorMiddleware(validators.otpSchema),
-  WatchAsyncController(authController.verifyOTP),
-)
 
 authRouter.post(
   '/login',
   RequestBodyValidatorMiddleware(validators.loginSchema),
-  WatchAsyncController(authController.login),
-)
+  WatchAsyncController(authController.login)
+);
 
 export default authRouter;

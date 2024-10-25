@@ -8,7 +8,6 @@ import { SignedData } from '../../../shared/interfaces';
 import { JwtSignOptions } from '../../../config/env';
 type jwtPayload = Jwt | JwtPayload | string;
 
-
 export interface HashingService {
   hash(data: string, salt?: string): Promise<string>;
   compare(data: string, hash: string): Promise<boolean>;
@@ -35,7 +34,7 @@ export class HashingServiceImpl implements HashingService {
 
   public async hash(
     data: string,
-    salt = bcrypt.genSaltSync(this.saltRound),
+    salt = bcrypt.genSaltSync(this.saltRound)
   ): Promise<string> {
     return bcrypt.hash(data, salt);
   }
@@ -51,15 +50,21 @@ export class HashingServiceImpl implements HashingService {
     const counterBuffer = Buffer.alloc(8);
     counterBuffer.writeUInt32BE(counter, 4);
 
-    const hmac = crypto.createHmac(this.hashAlgorithm, this.cryptoSecret).update(counterBuffer).digest();
+    const hmac = crypto
+      .createHmac(this.hashAlgorithm, this.cryptoSecret)
+      .update(counterBuffer)
+      .digest();
 
     const offset = hmac[hmac.length - 1] & 0x0f;
 
     const otpBytes = new Uint8Array(hmac.buffer, hmac.byteOffset + offset, 4);
 
     const otpValue =
-      new DataView(otpBytes.buffer, otpBytes.byteOffset, otpBytes.byteLength).getUint32(0, false) %
-      Math.pow(10, this.otpLength);
+      new DataView(
+        otpBytes.buffer,
+        otpBytes.byteOffset,
+        otpBytes.byteLength
+      ).getUint32(0, false) % Math.pow(10, this.otpLength);
 
     return otpValue.toString().padStart(this.otpLength, '0');
   }

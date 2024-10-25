@@ -7,7 +7,7 @@ export function GlobalErrorCatcherMiddleware(
   _req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _next: NextFunction,
+  _next: NextFunction
 ) {
   Logger.error(err);
 

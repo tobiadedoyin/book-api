@@ -5,7 +5,7 @@ import requestParser from '../utils/req-logger-parser';
 export default async function RequestLoggerMiddleware(
   req: Request,
   _res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const requestInfo = requestParser(req);
 

@@ -1,36 +1,19 @@
 export default {
-    createUser: `
+  createUser: `
         INSERT INTO 
-            users(email, password)
+            users(username, password)
         VALUES 
-            ($(email), $(password))
+            ($(username), $(password))
         RETURNING id
     `,
-    createProfile: `
-        INSERT INTO
-            profiles(user_id, first_name, last_name)
-        VALUES
-            ($(user_id), $(first_name), $(last_name))
-    `,
-    getUser: `
+  getUser: `
         SELECT
             users.id,
-            email,
-            password,
-            verified,
-            first_name,
-            last_name
+            username,
+            password
         FROM
             users
-        LEFT JOIN profiles ON profiles.user_id = users.id
         WHERE
-            users.id = $1 OR email = $1
-    `,
-    verifyUser: `
-        UPDATE users
-        SET
-            verified = true,
-            updated_at = NOW()
-        WHERE email = $1
+            users.id = $1 OR username = $1
     `,
 };
